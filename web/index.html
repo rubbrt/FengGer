@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fff8f4" />
+    <title>语录生成 · 峰言峰语工作台</title>
+    <link rel="stylesheet" href="/static/material.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="nav-rail">
+        <a class="brand-button" href="/" aria-label="峰言峰语工作台">峰</a>
+        <nav aria-label="工作流程">
+          <a class="rail-item active" href="/">
+            <span class="material-symbol">✎</span>
+            <small>语录</small>
+          </a>
+          <a class="rail-item" href="/production">
+            <span class="material-symbol">▶</span>
+            <small>制作</small>
+          </a>
+        </nav>
+        <button class="rail-item rail-bottom" id="themeButton" type="button">
+          <span class="material-symbol">◐</span>
+          <small>主题</small>
+        </button>
+      </aside>
+
+      <div class="page-shell">
+        <header class="top-app-bar">
+          <div>
+            <span class="product-name">峰言峰语工作台</span>
+            <span class="page-name">/ 语录生成</span>
+          </div>
+          <div class="status-group" id="systemStatus">
+            <span class="status-chip loading">检查本地环境</span>
+          </div>
+        </header>
+
+        <main class="content generation-content">
+          <section class="hero-block">
+            <div class="hero-copy">
+              <span class="overline">STEP 01 · SCRIPT</span>
+              <h1>先把话说明白，<br />再让它开口。</h1>
+              <p>
+                输入一个真实问题。你可以反复生成、比较和修改候选版本，
+                确认满意之后再进入配音与表情包制作。
+              </p>
+            </div>
+            <div class="hero-shape" aria-hidden="true">
+              <span>“</span>
+              <b>问</b>
+            </div>
+          </section>
+
+          <section class="surface-card prompt-card">
+            <div class="card-title-row">
+              <div>
+                <span class="overline">你的问题</span>
+                <h2>想让“峰哥”回答什么？</h2>
+              </div>
+              <span class="assist-chip">自动补全“风哥”开头</span>
+            </div>
+            <label class="md-field">
+              <span>新的语录问题</span>
+              <textarea
+                id="questionInput"
+                maxlength="500"
+                rows="5"
+                placeholder="例如：我女朋友总拿别人男朋友和我比较，我该怎么办？"
+              ></textarea>
+              <small id="questionCount">0 / 500</small>
+            </label>
+            <div class="button-row">
+              <button class="filled-button large" id="generateButton" type="button">
+                <span class="material-symbol">✦</span>
+                生成第一版
+              </button>
+            </div>
+          </section>
+
+          <section class="candidate-section">
+            <div class="section-heading">
+              <div>
+                <span class="overline">候选版本</span>
+                <h2>选一句你觉得对的</h2>
+              </div>
+              <div class="segmented-buttons" id="versionSwitcher"></div>
+            </div>
+
+            <div class="empty-state surface-card" id="emptyState">
+              <span class="material-symbol empty-icon">“</span>
+              <h3>还没有生成语录</h3>
+              <p>第一版生成后会保留在这里，重新生成不会覆盖旧版本。</p>
+            </div>
+
+            <article class="candidate-card hidden" id="candidateCard">
+              <div class="candidate-top">
+                <span class="candidate-label" id="candidateLabel">候选 1</span>
+                <div class="meta-chips">
+                  <span id="answerCount">0 字</span>
+                  <span id="durationEstimate">约 00:00</span>
+                  <span>可编辑</span>
+                </div>
+              </div>
+              <textarea
+                id="answerEditor"
+                aria-label="当前候选语录"
+                spellcheck="false"
+              ></textarea>
+              <div class="candidate-actions">
+                <button class="outlined-button" id="retryButton" type="button">
+                  <span class="material-symbol">↻</span>
+                  再生成一版
+                </button>
+                <button class="filled-button" id="continueButton" type="button">
+                  采用并进入制作
+                  <span class="material-symbol">→</span>
+                </button>
+              </div>
+            </article>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <dialog class="api-dialog" id="apiKeyDialog">
+      <div class="dialog-header">
+        <div>
+          <span class="overline">QWEN CONNECTION</span>
+          <h2>配置千问 API Key</h2>
+        </div>
+        <button class="icon-button" id="closeApiKeyDialog" type="button" aria-label="关闭">
+          <span class="material-symbol">×</span>
+        </button>
+      </div>
+      <div class="api-dialog-body">
+        <p>密钥只保存在当前本地服务进程的内存中，关闭服务后自动清除。</p>
+        <label class="md-field compact-field">
+          <span>DASHSCOPE_API_KEY</span>
+          <input id="apiKeyInput" type="password" autocomplete="off" />
+        </label>
+        <button class="filled-button large" id="saveApiKeyButton" type="button">
+          保存并检查连接
+        </button>
+      </div>
+    </dialog>
+
+    <div class="snackbar" id="snackbar" role="status" aria-live="polite"></div>
+    <script src="/static/common.js" defer></script>
+    <script src="/static/generate.js" defer></script>
+  </body>
+</html>

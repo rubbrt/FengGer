@@ -1,0 +1,31 @@
+# Python bytecode and local tooling
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local credentials and operating-system files
+.env
+.env.*
+!.env.example
+.agents/
+.codex/
+.DS_Store
+Thumbs.db
+
+# Downloaded models, virtual environments, and cloned voice weights
+Local_model/
+
+# Generated audio, video, manifests, and debug artifacts
+output/
+*.wav
+*.mp3
+*.mp4
+
+# HyperFrames render workspace, recreated for each production run
+video_renderer/assets/
+video_renderer/.hyperframes/
+video_renderer/snapshots*/
+video_renderer/index.html
+video_renderer/current_storyboard.json
+video_renderer/node_modules/

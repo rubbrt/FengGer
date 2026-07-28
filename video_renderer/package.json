@@ -1,0 +1,11 @@
+{
+  "name": "video_renderer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.7.25 preview",
+    "check": "npx --yes hyperframes@0.7.25 lint && npx --yes hyperframes@0.7.25 validate && npx --yes hyperframes@0.7.25 inspect",
+    "render": "npx --yes hyperframes@0.7.25 render",
+    "publish": "npx --yes hyperframes@0.7.25 publish"
+  }
+}

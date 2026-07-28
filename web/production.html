@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fff8f4" />
+    <title>音频与表情包 · 峰言峰语工作台</title>
+    <link rel="stylesheet" href="/static/material.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="nav-rail">
+        <a class="brand-button" href="/" aria-label="峰言峰语工作台">峰</a>
+        <nav aria-label="工作流程">
+          <a class="rail-item" href="/">
+            <span class="material-symbol">✎</span>
+            <small>语录</small>
+          </a>
+          <a class="rail-item active" href="/production">
+            <span class="material-symbol">▶</span>
+            <small>制作</small>
+          </a>
+        </nav>
+        <button class="rail-item rail-bottom" id="themeButton" type="button">
+          <span class="material-symbol">◐</span>
+          <small>主题</small>
+        </button>
+      </aside>
+
+      <div class="page-shell">
+        <header class="top-app-bar">
+          <div>
+            <span class="product-name">峰言峰语工作台</span>
+            <span class="page-name">/ 音频与表情包</span>
+          </div>
+          <div class="status-group" id="systemStatus">
+            <span class="status-chip loading">检查本地环境</span>
+          </div>
+        </header>
+
+        <main class="content production-content">
+          <section class="production-header">
+            <div>
+              <span class="overline">STEP 02 · PRODUCTION</span>
+              <h1>声音、表情、字幕，<br />在这里合到一起。</h1>
+            </div>
+            <a class="text-button" href="/">
+              <span class="material-symbol">←</span>
+              返回修改语录
+            </a>
+          </section>
+
+          <div class="production-grid">
+            <section class="surface-card script-summary">
+              <div class="card-title-row">
+                <div>
+                  <span class="overline">已采用语录</span>
+                  <h2 id="projectQuestion">尚未选择问题</h2>
+                </div>
+                <span class="assist-chip" id="selectedVersion">候选 —</span>
+              </div>
+              <div class="script-scroll" id="projectAnswer">
+                请先返回语录生成页面，采用一个候选版本。
+              </div>
+            </section>
+
+            <section class="surface-card voice-panel">
+              <div class="voice-orb">
+                <span class="material-symbol">≋</span>
+              </div>
+              <div class="voice-copy">
+                <span class="overline">LOCAL VOICE</span>
+                <h2>feng_voice v2Pro</h2>
+                <p>本地 GPT-SoVITS · CUDA 推理 · 文本自动分段</p>
+              </div>
+              <button class="filled-button large" id="ttsButton" type="button">
+                <span class="material-symbol">◉</span>
+                生成完整配音
+              </button>
+              <div class="linear-progress hidden" id="ttsProgress">
+                <span></span>
+              </div>
+              <p class="supporting-text" id="ttsMessage">
+                配音完成后会自动按音频时长生成表情包分镜。
+              </p>
+              <audio class="hidden" id="audioPlayer" controls></audio>
+            </section>
+          </div>
+
+          <section class="storyboard-section">
+            <div class="section-heading">
+              <div>
+                <span class="overline">STORYBOARD</span>
+                <h2>表情包分镜</h2>
+                <p>点击任意画面即可从 63 张本地素材中更换。</p>
+              </div>
+              <div class="count-badge">
+                <strong id="sceneCount">0</strong>
+                <span>场</span>
+              </div>
+            </div>
+
+            <div class="empty-state surface-card" id="storyboardEmpty">
+              <span class="material-symbol empty-icon">▦</span>
+              <h3>等待配音</h3>
+              <p>音频生成完成后，系统会自动切分语录并分配表情包。</p>
+            </div>
+            <div class="storyboard-grid hidden" id="storyboardGrid"></div>
+          </section>
+
+          <section class="surface-card export-card">
+            <div class="export-illustration" aria-hidden="true">
+              <span class="material-symbol">▶</span>
+            </div>
+            <div class="export-copy">
+              <span class="overline">FINAL OUTPUT</span>
+              <h2>生成峰哥表情包视频</h2>
+              <p>将配音、字幕和当前分镜合成为本地 MP4。</p>
+            </div>
+            <label class="select-field">
+              <span>画面比例</span>
+              <select id="aspectRatio">
+                <option value="16:9">16:9 横屏</option>
+                <option value="9:16">9:16 竖屏</option>
+              </select>
+            </label>
+            <button class="filled-button large" id="renderButton" type="button" disabled>
+              <span class="material-symbol">▰</span>
+              生成 MP4
+            </button>
+            <div class="linear-progress hidden" id="renderProgress">
+              <span></span>
+            </div>
+            <p class="supporting-text" id="renderMessage">
+              完成配音和分镜后即可导出。
+            </p>
+            <video class="hidden" id="videoPlayer" controls></video>
+          </section>
+
+          <section class="asset-library">
+            <div class="section-heading">
+              <div>
+                <span class="overline">ASSET LIBRARY</span>
+                <h2>内置峰哥表情包</h2>
+              </div>
+              <span class="assist-chip"><b id="assetCount">—</b>&nbsp;张素材</span>
+            </div>
+            <div class="asset-strip" id="assetStrip"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <dialog class="asset-dialog" id="assetDialog">
+      <div class="dialog-header">
+        <div>
+          <span class="overline">选择素材</span>
+          <h2>替换当前分镜图片</h2>
+        </div>
+        <button class="icon-button" id="closeAssetDialog" type="button" aria-label="关闭">
+          <span class="material-symbol">×</span>
+        </button>
+      </div>
+      <div class="dialog-grid" id="assetDialogGrid"></div>
+    </dialog>
+
+    <div class="snackbar" id="snackbar" role="status" aria-live="polite"></div>
+    <script src="/static/common.js" defer></script>
+    <script src="/static/production.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,2 @@
+$env:DASHSCOPE_API_KEY = "你的百炼 API Key"
+.\Local_model\gpt-sovits-demo-env\Scripts\python.exe .\qianwen_demo.py
